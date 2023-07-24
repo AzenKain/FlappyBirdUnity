@@ -1,0 +1,5 @@
+# Bỏ qua thư mục Library và obj
+Library/
+obj/
+.vs/
+.vsconfig
