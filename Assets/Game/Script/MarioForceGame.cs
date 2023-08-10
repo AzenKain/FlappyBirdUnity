@@ -1,3 +1,4 @@
+using SimpleJSON;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -59,7 +60,16 @@ public class MarioForceGame : MonoBehaviour
         {
             _audioSource.PlayOneShot(_clipHit);
             _gameManager._gameState = GameState.Over;
-            _uiManager.GameOver();
+            KeyValuePair<string, JSONNode> tmpItem = DataManager.Instant.GetHighScoreItem();
+            string highScore = $"{tmpItem.Key}: {tmpItem.Value.AsInt:00#}";
+            if (_gameManager.getScore() > tmpItem.Value.AsInt)
+            {
+                _uiManager.NewHighScore();
+            }
+            else
+            {
+                _uiManager.GameOver(highScore);
+            }
         }
     }
 

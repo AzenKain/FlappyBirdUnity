@@ -22,7 +22,7 @@ public class PlusScore : MonoBehaviour
         if (collision.CompareTag("Bird"))
         {
             _gameManager.setScore(_gameManager.getScore() + 1);
-            _uiManager.setScore(_gameManager.getScore());
+            _uiManager.setUIScore(_gameManager.getScore());
             this._audioSource.PlayOneShot(_clipPoint);
             if (_gameManager.getScore() == 95)
             {

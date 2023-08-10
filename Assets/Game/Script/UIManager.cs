@@ -4,10 +4,14 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
+using SimpleJSON;
 
 public class UIManager : SingleTon<UIManager>
 {
     [SerializeField] TMP_Text _scoreText;
+    [SerializeField] TMP_Text _highScoreText;
+    [SerializeField] TMP_InputField _playerHighScoreField;
     [SerializeField] Button _pauseBtn;
     [SerializeField] Button _resumeBtn;
     [SerializeField] Image _gameOver;
@@ -26,13 +30,26 @@ public class UIManager : SingleTon<UIManager>
     {
         
     }
-    public void GameOver()
+    public void NewHighScore()
     {
+        _highScoreText.text = "New High Score!";
+        _highScoreText.gameObject.SetActive(true);
+        _resumeBtn.gameObject.SetActive(true);
+        _playerHighScoreField.gameObject.SetActive(true);
+        DataManager.Instant.updateHighScore(_playerHighScoreField.text, _gameManager.getScore());
+        _resumeBtn.onClick.AddListener(clickGameOver);
+    }
+    public void GameOver(string highScore)
+    {
+
+        _highScoreText.text = highScore;
+        _highScoreText.gameObject.SetActive(true);
         _resumeBtn.gameObject.SetActive(true);
         _gameOver.gameObject.SetActive(true);
         _resumeBtn.onClick.RemoveAllListeners();
         _resumeBtn.onClick.AddListener(clickGameOver);
     }
+
     public void clickGameOver()
     {
         SceneManager.LoadScene(1);
@@ -51,7 +68,7 @@ public class UIManager : SingleTon<UIManager>
         _pauseBtn.interactable = false;
         _resumeBtn.gameObject.SetActive(true);
     }
-    public void setScore(int score)
+    public void setUIScore(int score)
     {
         _scoreText.text = $"{score:00#}";
     }
